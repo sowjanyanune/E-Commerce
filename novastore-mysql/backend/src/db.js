@@ -13,5 +13,14 @@ export const pool = mysql.createPool({
   database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
-  decimalNumbers: false
+  decimalNumbers: false,
+
+  ...(process.env.DB_SSL_CA
+    ? {
+        ssl: {
+          ca: process.env.DB_SSL_CA.replace(/\\n/g, '\n'),
+          rejectUnauthorized: true
+        }
+      }
+    : {})
 });
